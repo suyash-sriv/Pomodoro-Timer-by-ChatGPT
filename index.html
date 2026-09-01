@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#101713">
+    <meta name="description" content="A wall-clock anchored sequence timer for focus sessions.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icons/icon-192.png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Wayline — Sequence Timer</title>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <main class="shell">
+      <header class="masthead">
+        <a class="brand" href="#" aria-label="Wayline home">
+          <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span>WAYLINE</span>
+        </a>
+        <button id="installButton" class="quiet-button" type="button" hidden>Install app</button>
+      </header>
+
+      <section class="composer" aria-labelledby="composerTitle">
+        <div class="eyebrow" id="composerTitle">Plot your session</div>
+        <form id="sequenceForm">
+          <label class="sequence-label" for="sequenceInput">Minutes, in order</label>
+          <div class="input-row">
+            <input id="sequenceInput" name="sequence" value="25 + 5 + 25 + 15"
+              autocomplete="off" autocapitalize="off" spellcheck="false"
+              aria-describedby="syntaxHint parseMessage">
+            <button class="build-button" type="submit">Set route</button>
+          </div>
+          <div class="under-input">
+            <p id="syntaxHint">Try <code>25, 5, 25, 15</code> · <code>4x(25+5)</code> · <code>.5 + .25</code></p>
+            <label class="switch-label">
+              <input id="alternateToggle" type="checkbox">
+              <span class="switch" aria-hidden="true"></span>
+              Alternate focus / break
+            </label>
+          </div>
+          <p id="parseMessage" class="parse-message" role="status"></p>
+        </form>
+
+        <div class="saved-wrap">
+          <span class="saved-label">Saved routes</span>
+          <div id="savedSequences" class="saved-sequences"></div>
+        </div>
+      </section>
+
+      <section class="timer-card" aria-labelledby="currentLabel">
+        <div class="timer-topline">
+          <div>
+            <div class="eyebrow">Now travelling</div>
+            <h1 id="currentLabel">Block 1 · Focus</h1>
+          </div>
+          <div class="finish-panel">
+            <span>Finish</span>
+            <strong id="finishTime">—</strong>
+          </div>
+        </div>
+
+        <div id="remainingTime" class="remaining" aria-live="polite">25:00</div>
+
+        <div class="route-heading">
+          <span id="elapsedLabel">0:00 elapsed</span>
+          <span id="totalLabel">1:10:00 total</span>
+        </div>
+        <div id="sessionBar" class="session-bar" role="group" aria-label="Session blocks"></div>
+        <div class="route-legend" aria-hidden="true">
+          <span><i class="focus-dot"></i>Focus</span>
+          <span id="breakLegend" hidden><i class="break-dot"></i>Break</span>
+          <span class="tap-hint">Tap a block to jump</span>
+        </div>
+
+        <div class="controls">
+          <button id="resetButton" class="control secondary" type="button">Reset</button>
+          <button id="playButton" class="control primary" type="button">
+            <span id="playIcon" aria-hidden="true">▶</span>
+            <span id="playLabel">Start route</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="settings" aria-label="Timer options">
+        <label>
+          <input id="soundToggle" type="checkbox" checked>
+          <span><strong>Handoff chimes</strong><small>Sound at each block and at the finish</small></span>
+        </label>
+        <label>
+          <input id="wakeToggle" type="checkbox">
+          <span><strong>Keep screen awake</strong><small>Best reliability while the timer is open</small></span>
+        </label>
+        <button id="notificationButton" class="notification-button" type="button">
+          <span><strong>Enable notifications</strong><small id="notificationStatus">For handoffs while Android keeps the app active</small></span>
+          <b aria-hidden="true">→</b>
+        </button>
+      </section>
+
+      <footer>
+        <span>Wall-clock anchored</span>
+        <span id="offlineStatus">Ready offline after first load</span>
+      </footer>
+    </main>
+
+    <dialog id="infoDialog">
+      <form method="dialog">
+        <button class="dialog-close" value="close" aria-label="Close">×</button>
+        <div class="eyebrow">Android install</div>
+        <h2>Add Wayline to your home screen</h2>
+        <p>In Chrome, open the ⋮ menu and choose <strong>Install app</strong> or <strong>Add to Home screen</strong>. It will open in its own window and work offline.</p>
+        <p class="warning"><strong>Important:</strong> Android browsers cannot guarantee an exact alarm after a web app is fully closed. Keep Wayline open (the screen may be locked) for the best web-only handoff reliability. Reopening always restores the correct wall-clock position.</p>
+        <button class="dialog-action" value="close">Got it</button>
+      </form>
+    </dialog>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>
